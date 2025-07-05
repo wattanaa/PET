@@ -4,246 +4,660 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบแยกประเภทขวดน้ำและกระป๋อง</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
+    <title>EcoPoint - ระบบแลกขวดอัตโนมัติ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./styles.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
 
-<body>
-    <div class="container">
-        <!-- Enhanced Header Section -->
-        <header class="header">
-            <div class="header-content">
-                <div class="logo-section">
-                    <div class="logo-icon">🔍</div>
-                    <h1 class="main-title">ระบบแยกประเภทขวดน้ำและกระป๋อง</h1>
-                </div>
-                <p class="subtitle">ใช้กล้องเพื่อตรวจจับและแยกประเภทวัสดุรีไซเคิลแบบเรียลไทม์</p>
-            </div>
-        </header>
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+        }
 
-        <!-- Enhanced Main Content -->
-        <main class="main-content">
-            <!-- Enhanced Camera Section -->
-            <section class="camera-section">
-                <div class="glass-card camera-card">
-                    <div class="card-header">
-                        <h2 class="section-title">📷 กล้องตรวจจับ</h2>
-                        <div class="status-indicator">
-                            <div class="status-dot"></div>
-                            <span class="status-text">พร้อมใช้งาน</span>
-                        </div>
-                    </div>
+        .camera-frame {
+            border: 3px dashed #667eea;
+            animation: pulse 2s infinite;
+        }
 
-                    <div class="camera-container">
-                        <div class="camera-frame">
-                            <video id="video" autoplay muted></video>
-                            <div class="scanning-overlay">
-                                <div class="scanning-line"></div>
-                                <div class="corner-frame top-left"></div>
-                                <div class="corner-frame top-right"></div>
-                                <div class="corner-frame bottom-left"></div>
-                                <div class="corner-frame bottom-right"></div>
-                            </div>
-                            <div class="detection-overlay" id="overlay"></div>
-                        </div>
-                    </div>
+        @keyframes pulse {
 
-                    <div class="control-panel">
-                        <button id="startBtn" class="btn btn-primary">
-                            <span class="btn-icon">🎥</span>
-                            เริ่มกล้อง
-                        </button>
-                        <button id="captureBtn" class="btn btn-secondary" disabled>
-                            <span class="btn-icon">📸</span>
-                            ถ่ายภาพ
-                        </button>
-                        <button id="stopBtn" class="btn btn-danger" disabled>
-                            <span class="btn-icon">⏹️</span>
-                            หยุด
-                        </button>
-                    </div>
-                </div>
-            </section>
+            0%,
+            100% {
+                opacity: 1;
+            }
 
-            <!-- Enhanced Results Section -->
-            <section class="results-section">
-                <!-- Enhanced Detection Status -->
-                <div class="glass-card status-card">
-                    <h2 class="section-title">📊 สถานะการตรวจจับ</h2>
-                    <div id="status" class="status-display">
-                        <div class="status-content">
-                            <div class="pulse-loader"></div>
-                            <span>กรุณาเริ่มกล้องเพื่อเริ่มการตรวจจับ</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Enhanced Classification Results -->
-                <div class="glass-card results-card">
-                    <h2 class="section-title">🎯 ผลการจำแนก</h2>
-                    <div id="results" class="results-container">
-                        <div class="empty-state">
-                            <div class="empty-icon">🔍</div>
-                            <p>ยังไม่มีการตรวจจับวัสดุ</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Enhanced Statistics -->
-                <div class="glass-card stats-card">
-                    <h2 class="section-title">📈 สถิติการตรวจจับ</h2>
-                    <div class="stats-grid">
-                        <div class="stat-item bottle-stat">
-                            <div class="stat-icon">🍼</div>
-                            <div class="stat-number" id="bottleCount">0</div>
-                            <div class="stat-label">ขวดน้ำ</div>
-                            <div class="stat-progress">
-                                <div class="progress-bar bottle-progress"></div>
-                            </div>
-                        </div>
-                        <div class="stat-item can-stat">
-                            <div class="stat-icon">🥫</div>
-                            <div class="stat-number" id="canCount">0</div>
-                            <div class="stat-label">กระป๋อง</div>
-                            <div class="stat-progress">
-                                <div class="progress-bar can-progress"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- Enhanced Information Cards -->
-        <section class="info-section">
-            <div class="info-grid">
-                <div class="info-card bottle-info">
-                    <div class="info-header">
-                        <div class="info-icon">🍼</div>
-                        <h3>ขวดน้ำพลาสติก</h3>
-                    </div>
-                    <ul class="info-list">
-                        <li>ทรงกระบอกใส มักมีฝาเกลียว</li>
-                        <li>วัสดุพลาสติก PET หรือ HDPE</li>
-                        <li>สามารถรีไซเคิลได้ 100%</li>
-                        <li>แยกฝาและตัวขวดก่อนทิ้ง</li>
-                    </ul>
-                </div>
-                <div class="info-card can-info">
-                    <div class="info-header">
-                        <div class="info-icon">🥫</div>
-                        <h3>กระป๋องโลหะ</h3>
-                    </div>
-                    <ul class="info-list">
-                        <li>ทรงกระบอกโลหะ มักเป็นอลูมิเนียม</li>
-                        <li>ผิวเรียบ สะท้อนแสงได้ดี</li>
-                        <li>รีไซเคิลได้ไม่จำกัดครั้ง</li>
-                        <li>ล้างให้สะอาดก่อนทิ้ง</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </div>
-</body>
-
-<script>
-    // Enhanced functionality for demo
-    document.getElementById('startBtn').addEventListener('click', function () {
-        this.disabled = true;
-        document.getElementById('captureBtn').disabled = false;
-        document.getElementById('stopBtn').disabled = false;
-
-        document.querySelector('.status-dot').classList.add('active');
-        document.querySelector('.status-text').textContent = 'กำลังทำงาน';
-        document.getElementById('status').innerHTML = `
-            <div class="status-content active">
-                <div class="pulse-loader active"></div>
-                <span>🟢 กล้องเริ่มทำงานแล้ว - พร้อมตรวจจับวัสดุ</span>
-            </div>
-        `;
-    });
-
-    document.getElementById('stopBtn').addEventListener('click', function () {
-        document.getElementById('startBtn').disabled = false;
-        document.getElementById('captureBtn').disabled = true;
-        this.disabled = true;
-
-        document.querySelector('.status-dot').classList.remove('active');
-        document.querySelector('.status-text').textContent = 'พร้อมใช้งาน';
-        document.getElementById('status').innerHTML = `
-            <div class="status-content">
-                <div class="pulse-loader"></div>
-                <span>⏹️ กล้องหยุดทำงานแล้ว</span>
-            </div>
-        `;
-    });
-
-    document.getElementById('captureBtn').addEventListener('click', function () {
-        // Enhanced simulation with animations
-        const bottleCount = Math.floor(Math.random() * 5) + 1;
-        const canCount = Math.floor(Math.random() * 4) + 1;
-
-        // Animate counters
-        animateCounter('bottleCount', bottleCount);
-        animateCounter('canCount', canCount);
-
-        // Update progress bars
-        setTimeout(() => {
-            const total = bottleCount + canCount;
-            const bottlePercent = (bottleCount / total) * 100;
-            const canPercent = (canCount / total) * 100;
-
-            document.querySelector('.bottle-progress').style.width = bottlePercent + '%';
-            document.querySelector('.can-progress').style.width = canPercent + '%';
-        }, 500);
-
-        // Enhanced results display
-        document.getElementById('results').innerHTML = `
-            <div class="result-item bottle-result">
-                <div class="result-icon">🍼</div>
-                <div class="result-content">
-                    <h4>ขวดน้ำพลาสติก</h4>
-                    <p>ความแม่นยำ: ${Math.floor(Math.random() * 10) + 90}%</p>
-                    <span class="result-tag">PET Plastic</span>
-                </div>
-            </div>
-            <div class="result-item can-result">
-                <div class="result-icon">🥫</div>
-                <div class="result-content">
-                    <h4>กระป๋องโลหะ</h4>
-                    <p>ความแม่นยำ: ${Math.floor(Math.random() * 8) + 92}%</p>
-                    <span class="result-tag">Aluminum</span>
-                </div>
-            </div>
-        `;
-    });
-
-    function animateCounter(elementId, targetValue) {
-        const element = document.getElementById(elementId);
-        const startValue = parseInt(element.textContent);
-        const duration = 1000;
-        const startTime = performance.now();
-
-        function updateCounter(currentTime) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const currentValue = Math.floor(startValue + (targetValue - startValue) * progress);
-
-            element.textContent = currentValue;
-
-            if (progress < 1) {
-                requestAnimationFrame(updateCounter);
+            50% {
+                opacity: 0.7;
             }
         }
 
-        requestAnimationFrame(updateCounter);
-    }
-
-    // Add floating animation to empty state
-    setInterval(() => {
-        const emptyIcon = document.querySelector('.empty-icon');
-        if (emptyIcon) {
-            emptyIcon.style.transform = `translateY(${Math.sin(Date.now() * 0.002) * 5}px)`;
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
         }
-    }, 50);
-</script>
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .success-bounce {
+            animation: successBounce 0.6s ease-out;
+        }
+
+        @keyframes successBounce {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="glass-effect shadow-xl">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-2xl">🌍</div>
+                <h1 class="text-2xl font-bold text-gray-800">EcoPoint</h1>
+            </div>
+            <div id="userInfo" class="hidden flex items-center space-x-4">
+                <div class="text-right">
+                    <div class="text-sm text-gray-600">สวัสดี</div>
+                    <div id="userPhone" class="font-semibold text-gray-800"></div>
+                </div>
+                <button onclick="logout()"
+                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105">
+                    ออกจากระบบ
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="flex items-center justify-center min-h-screen px-4">
+        <div class="glass-effect rounded-3xl p-8 max-w-md w-full shadow-2xl slide-up">
+            <div class="text-center mb-8">
+                <div
+                    class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-4xl mx-auto mb-4 float-animation">
+                    🔐</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">ยินดีต้อนรับ</h2>
+                <p class="text-gray-600">เข้าสู่ระบบเพื่อเริ่มสะสมคะแนน</p>
+            </div>
+
+            <div id="phoneStep">
+                <div class="mb-6">
+                    <input type="tel" id="phoneInput" placeholder="เบอร์โทรศัพท์"
+                        class="w-full p-4 border-0 rounded-2xl bg-white/80 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-200 text-lg transition-all duration-300">
+                </div>
+                <button onclick="sendOTP()"
+                    class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white p-4 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    ส่งรหัส OTP
+                </button>
+            </div>
+
+            <div id="otpStep" class="hidden">
+                <div class="text-center mb-6">
+                    <div
+                        class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+                        📱</div>
+                    <p class="text-gray-600">รหัส OTP ส่งไปยัง</p>
+                    <p class="font-semibold text-lg" id="sentPhone"></p>
+                </div>
+                <div class="mb-6">
+                    <input type="text" id="otpInput" placeholder="รหัส OTP" maxlength="6"
+                        class="w-full p-4 border-0 rounded-2xl bg-white/80 focus:bg-white focus:outline-none focus:ring-4 focus:ring-green-200 text-center text-2xl font-bold tracking-widest transition-all duration-300">
+                </div>
+                <button onclick="verifyOTP()"
+                    class="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white p-4 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg mb-3">
+                    ยืนยันรหัส OTP
+                </button>
+                <button onclick="backToPhone()" class="w-full text-gray-600 hover:text-gray-800 p-2 transition-colors">
+                    ← กลับไปแก้ไขเบอร์โทร
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="hidden">
+        <!-- Navigation -->
+        <nav class="max-w-6xl mx-auto px-6 py-6">
+            <div class="glass-effect rounded-3xl shadow-xl overflow-hidden">
+                <div class="flex">
+                    <button onclick="showScreen('scan')" id="scanTab"
+                        class="flex-1 p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold text-lg transition-all duration-300">
+                        <div class="text-2xl mb-1">📷</div>
+                        สแกนขวด
+                    </button>
+                    <button onclick="showScreen('profile')" id="profileTab"
+                        class="flex-1 p-6 text-gray-600 hover:bg-white/50 font-semibold text-lg transition-all duration-300">
+                        <div class="text-2xl mb-1">👤</div>
+                        โปรไฟล์
+                    </button>
+                    <button onclick="showScreen('history')" id="historyTab"
+                        class="flex-1 p-6 text-gray-600 hover:bg-white/50 font-semibold text-lg transition-all duration-300">
+                        <div class="text-2xl mb-1">📊</div>
+                        ประวัติ
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Scan Screen -->
+        <div id="scanScreen" class="max-w-4xl mx-auto px-6 pb-8">
+            <div class="glass-effect rounded-3xl shadow-2xl p-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-3">สแกนขวดและกระป๋อง</h2>
+                    <p class="text-gray-600 text-lg">วางขวดในกรอบแล้วกดถ่ายภาพ</p>
+                </div>
+
+                <!-- Camera Area -->
+                <div class="camera-frame bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl p-12 mb-8 text-center">
+                    <div id="cameraView">
+                        <div class="text-8xl mb-6 float-animation">📷</div>
+                        <p class="text-gray-600 mb-6 text-lg">กล้องพร้อมใช้งาน</p>
+                        <button onclick="startCamera()"
+                            class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-10 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                            เปิดกล้อง
+                        </button>
+                    </div>
+
+                    <video id="video" class="hidden w-full max-w-lg mx-auto rounded-2xl shadow-lg" autoplay></video>
+                    <canvas id="canvas" class="hidden"></canvas>
+
+                    <div id="capturedImage" class="hidden">
+                        <img id="photoPreview" class="w-full max-w-lg mx-auto rounded-2xl mb-6 shadow-lg">
+                        <div class="space-x-4">
+                            <button onclick="analyzeImage()"
+                                class="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white px-8 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105">
+                                วิเคราะห์ภาพ
+                            </button>
+                            <button onclick="retakePhoto()"
+                                class="bg-gray-500 hover:bg-gray-600 text-white px-8 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105">
+                                ถ่ายใหม่
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="captureBtn" onclick="capturePhoto()"
+                    class="hidden w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white p-6 rounded-2xl font-semibold text-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    📸 ถ่ายภาพ
+                </button>
+
+                <!-- Results -->
+                <div id="scanResults" class="hidden slide-up">
+                    <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">ผลการวิเคราะห์</h3>
+                        <div id="detectionResults" class="space-y-4 mb-8"></div>
+                        <div class="bg-white rounded-2xl p-6 shadow-lg">
+                            <div class="grid grid-cols-2 gap-6 mb-6">
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold text-blue-600" id="bottleCount">0</div>
+                                    <div class="text-gray-600">ขวดที่ตรวจพบ</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold text-green-600" id="earnedPoints">0</div>
+                                    <div class="text-gray-600">คะแนนที่ได้รับ</div>
+                                </div>
+                            </div>
+                            <button onclick="confirmScan()"
+                                class="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white p-4 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                ✅ ยืนยันและบันทึกคะแนน
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Screen -->
+        <div id="profileScreen" class="hidden max-w-4xl mx-auto px-6 pb-8">
+            <div class="glass-effect rounded-3xl shadow-2xl p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">ข้อมูลส่วนตัว</h2>
+
+                <div class="space-y-8">
+                    <div class="text-center bg-gradient-to-br from-yellow-50 to-orange-50 rounded-3xl p-8">
+                        <div class="text-6xl mb-4 float-animation">🏆</div>
+                        <div class="text-5xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent"
+                            id="totalPoints">0</div>
+                        <div class="text-gray-600 text-lg">คะแนนสะสม</div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-3">เบอร์โทรศัพท์</label>
+                            <input type="tel" id="profilePhone"
+                                class="w-full p-4 border-0 rounded-2xl bg-gray-100 text-gray-600" readonly>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-3">ชื่อ-นามสกุล</label>
+                            <input type="text" id="profileName" placeholder="กรอกชื่อ-นามสกุล"
+                                class="w-full p-4 border-0 rounded-2xl bg-white focus:outline-none focus:ring-4 focus:ring-blue-200 transition-all duration-300">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-3">อีเมล</label>
+                            <input type="email" id="profileEmail" placeholder="กรอกอีเมล"
+                                class="w-full p-4 border-0 rounded-2xl bg-white focus:outline-none focus:ring-4 focus:ring-blue-200 transition-all duration-300">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-3">วันเกิด</label>
+                            <input type="date" id="profileBirthdate"
+                                class="w-full p-4 border-0 rounded-2xl bg-white focus:outline-none focus:ring-4 focus:ring-blue-200 transition-all duration-300">
+                        </div>
+                    </div>
+
+                    <button onclick="updateProfile()"
+                        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white p-4 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        💾 บันทึกข้อมูล
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Screen -->
+        <div id="historyScreen" class="hidden max-w-4xl mx-auto px-6 pb-8">
+            <div class="glass-effect rounded-3xl shadow-2xl p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">ประวัติการใช้งาน</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="text-center bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6">
+                        <div class="text-3xl font-bold text-blue-600" id="totalScans">0</div>
+                        <div class="text-gray-600">ครั้งที่สแกน</div>
+                    </div>
+                    <div class="text-center bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6">
+                        <div class="text-3xl font-bold text-green-600" id="totalBottles">0</div>
+                        <div class="text-gray-600">ขวดทั้งหมด</div>
+                    </div>
+                    <div class="text-center bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-6">
+                        <div class="text-3xl font-bold text-yellow-600" id="totalEarned">0</div>
+                        <div class="text-gray-600">คะแนนรวม</div>
+                    </div>
+                </div>
+
+                <div id="historyList" class="space-y-4">
+                    <div class="text-center text-gray-500 py-12">
+                        <div class="text-6xl mb-4">📋</div>
+                        <p class="text-lg">ยังไม่มีประวัติการใช้งาน</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+        <div class="glass-effect rounded-3xl p-8 max-w-sm w-full text-center success-bounce shadow-2xl">
+            <div class="text-8xl mb-6">🎉</div>
+            <h3 class="text-3xl font-bold text-green-600 mb-4">สำเร็จ!</h3>
+            <p class="text-gray-600 mb-6 text-lg">บันทึกคะแนนเรียบร้อยแล้ว</p>
+            <button onclick="closeSuccessModal()"
+                class="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white px-8 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105">
+                ตกลง
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let currentStream = null;
+        let scanHistory = [];
+
+        // Mock database
+        const users = {};
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedUser = localStorage.getItem('ecoPointUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showMainApp();
+            }
+        });
+
+        // Phone and OTP functions
+        function sendOTP() {
+            const phone = document.getElementById('phoneInput').value.trim();
+            if (!phone || phone.length < 10) {
+                alert('กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง');
+                return;
+            }
+
+            if (!users[phone]) {
+                users[phone] = {
+                    phone: phone,
+                    name: '',
+                    email: '',
+                    birthdate: '',
+                    totalPoints: 0,
+                    history: []
+                };
+            }
+
+            document.getElementById('sentPhone').textContent = phone;
+            document.getElementById('phoneStep').classList.add('hidden');
+            document.getElementById('otpStep').classList.remove('hidden');
+
+            setTimeout(() => {
+                document.getElementById('otpInput').value = '123456';
+                alert('รหัส OTP สำหรับทดสอบ: 123456');
+            }, 1000);
+        }
+
+        function verifyOTP() {
+            const otp = document.getElementById('otpInput').value.trim();
+            const phone = document.getElementById('sentPhone').textContent;
+
+            if (otp === '123456') {
+                currentUser = users[phone];
+                localStorage.setItem('ecoPointUser', JSON.stringify(currentUser));
+                showMainApp();
+            } else {
+                alert('รหัส OTP ไม่ถูกต้อง');
+            }
+        }
+
+        function backToPhone() {
+            document.getElementById('phoneStep').classList.remove('hidden');
+            document.getElementById('otpStep').classList.add('hidden');
+            document.getElementById('otpInput').value = '';
+        }
+
+        function showMainApp() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('userInfo').classList.remove('hidden');
+            document.getElementById('userPhone').textContent = currentUser.phone;
+
+            loadUserData();
+            showScreen('scan');
+        }
+
+        function logout() {
+            localStorage.removeItem('ecoPointUser');
+            currentUser = null;
+            stopCamera();
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('userInfo').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('phoneStep').classList.remove('hidden');
+            document.getElementById('otpStep').classList.add('hidden');
+            document.getElementById('phoneInput').value = '';
+            document.getElementById('otpInput').value = '';
+        }
+
+        // Screen navigation
+        function showScreen(screen) {
+            document.getElementById('scanScreen').classList.add('hidden');
+            document.getElementById('profileScreen').classList.add('hidden');
+            document.getElementById('historyScreen').classList.add('hidden');
+
+            document.getElementById('scanTab').className = 'flex-1 p-6 text-gray-600 hover:bg-white/50 font-semibold text-lg transition-all duration-300';
+            document.getElementById('profileTab').className = 'flex-1 p-6 text-gray-600 hover:bg-white/50 font-semibold text-lg transition-all duration-300';
+            document.getElementById('historyTab').className = 'flex-1 p-6 text-gray-600 hover:bg-white/50 font-semibold text-lg transition-all duration-300';
+
+            if (screen === 'scan') {
+                document.getElementById('scanScreen').classList.remove('hidden');
+                document.getElementById('scanTab').className = 'flex-1 p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold text-lg transition-all duration-300';
+            } else if (screen === 'profile') {
+                document.getElementById('profileScreen').classList.remove('hidden');
+                document.getElementById('profileTab').className = 'flex-1 p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold text-lg transition-all duration-300';
+                loadProfileData();
+            } else if (screen === 'history') {
+                document.getElementById('historyScreen').classList.remove('hidden');
+                document.getElementById('historyTab').className = 'flex-1 p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold text-lg transition-all duration-300';
+                loadHistoryData();
+            }
+        }
+
+        // Camera functions
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                .then(stream => {
+                    currentStream = stream;
+                    const video = document.getElementById('video');
+                    video.srcObject = stream;
+
+                    document.getElementById('cameraView').classList.add('hidden');
+                    document.getElementById('video').classList.remove('hidden');
+                    document.getElementById('captureBtn').classList.remove('hidden');
+                })
+                .catch(err => {
+                    alert('ไม่สามารถเข้าถึงกล้องได้: ' + err.message);
+                });
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0);
+
+            const imageData = canvas.toDataURL('image/jpeg');
+            document.getElementById('photoPreview').src = imageData;
+
+            stopCamera();
+            document.getElementById('video').classList.add('hidden');
+            document.getElementById('captureBtn').classList.add('hidden');
+            document.getElementById('capturedImage').classList.remove('hidden');
+        }
+
+        function retakePhoto() {
+            document.getElementById('capturedImage').classList.add('hidden');
+            document.getElementById('scanResults').classList.add('hidden');
+            startCamera();
+        }
+
+        function stopCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+            }
+        }
+
+        function analyzeImage() {
+            document.getElementById('capturedImage').classList.add('hidden');
+
+            setTimeout(() => {
+                const detectedBottles = Math.floor(Math.random() * 5) + 1;
+                const detectedCans = Math.floor(Math.random() * 3);
+                displayResults(detectedBottles, detectedCans);
+            }, 2000);
+
+            document.getElementById('scanResults').classList.remove('hidden');
+            document.getElementById('detectionResults').innerHTML = `
+                <div class="text-center py-8">
+                    <div class="animate-spin text-6xl mb-4">🔄</div>
+                    <p class="text-gray-600 text-lg">กำลังวิเคราะห์ภาพ...</p>
+                </div>
+            `;
+        }
+
+        function displayResults(bottles, cans) {
+            const resultsDiv = document.getElementById('detectionResults');
+            const pointsPerBottle = 10;
+            const totalPoints = bottles * pointsPerBottle;
+
+            let resultsHTML = '';
+
+            if (bottles > 0) {
+                resultsHTML += `
+                    <div class="flex items-center justify-between p-4 bg-white rounded-2xl shadow-lg">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-3xl">🍼</span>
+                            <span class="font-semibold text-lg">ขวดน้ำ</span>
+                        </div>
+                        <span class="text-2xl font-bold text-blue-600">${bottles} ใบ</span>
+                    </div>
+                `;
+            }
+
+            if (cans > 0) {
+                resultsHTML += `
+                    <div class="flex items-center justify-between p-4 bg-white rounded-2xl shadow-lg">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-3xl">🥤</span>
+                            <span class="font-semibold text-lg">กระป๋อง</span>
+                        </div>
+                        <span class="text-2xl font-bold text-gray-600">${cans} ใบ</span>
+                    </div>
+                `;
+            }
+
+            if (bottles === 0 && cans === 0) {
+                resultsHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <div class="text-6xl mb-4">🔍</div>
+                        <p class="text-lg">ไม่พบขวดหรือกระป๋องในภาพ</p>
+                    </div>
+                `;
+            }
+
+            resultsDiv.innerHTML = resultsHTML;
+            document.getElementById('bottleCount').textContent = bottles;
+            document.getElementById('earnedPoints').textContent = totalPoints;
+        }
+
+        function confirmScan() {
+            const bottles = parseInt(document.getElementById('bottleCount').textContent);
+            const points = parseInt(document.getElementById('earnedPoints').textContent);
+
+            if (bottles > 0) {
+                currentUser.totalPoints += points;
+
+                const scanRecord = {
+                    date: new Date().toLocaleString('th-TH'),
+                    bottles: bottles,
+                    points: points
+                };
+
+                currentUser.history.push(scanRecord);
+                users[currentUser.phone] = currentUser;
+                localStorage.setItem('ecoPointUser', JSON.stringify(currentUser));
+
+                document.getElementById('successModal').classList.remove('hidden');
+
+                setTimeout(() => {
+                    resetScanScreen();
+                }, 2000);
+            }
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+
+        function resetScanScreen() {
+            document.getElementById('scanResults').classList.add('hidden');
+            document.getElementById('capturedImage').classList.add('hidden');
+            document.getElementById('cameraView').classList.remove('hidden');
+        }
+
+        function loadProfileData() {
+            document.getElementById('profilePhone').value = currentUser.phone;
+            document.getElementById('profileName').value = currentUser.name || '';
+            document.getElementById('profileEmail').value = currentUser.email || '';
+            document.getElementById('profileBirthdate').value = currentUser.birthdate || '';
+            document.getElementById('totalPoints').textContent = currentUser.totalPoints;
+        }
+
+        function updateProfile() {
+            currentUser.name = document.getElementById('profileName').value;
+            currentUser.email = document.getElementById('profileEmail').value;
+            currentUser.birthdate = document.getElementById('profileBirthdate').value;
+
+            users[currentUser.phone] = currentUser;
+            localStorage.setItem('ecoPointUser', JSON.stringify(currentUser));
+
+            alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+        }
+
+        function loadHistoryData() {
+            const totalScans = currentUser.history.length;
+            const totalBottles = currentUser.history.reduce((sum, record) => sum + record.bottles, 0);
+            const totalEarned = currentUser.history.reduce((sum, record) => sum + record.points, 0);
+
+            document.getElementById('totalScans').textContent = totalScans;
+            document.getElementById('totalBottles').textContent = totalBottles;
+            document.getElementById('totalEarned').textContent = totalEarned;
+
+            const historyList = document.getElementById('historyList');
+
+            if (currentUser.history.length === 0) {
+                historyList.innerHTML = `
+                    <div class="text-center text-gray-500 py-12">
+                        <div class="text-6xl mb-4">📋</div>
+                        <p class="text-lg">ยังไม่มีประวัติการใช้งาน</p>
+                    </div>
+                `;
+            } else {
+                historyList.innerHTML = currentUser.history
+                    .slice()
+                    .reverse()
+                    .map(record => `
+                        <div class="flex justify-between items-center p-6 bg-white rounded-2xl shadow-lg">
+                            <div>
+                                <div class="font-semibold text-lg">${record.date}</div>
+                                <div class="text-gray-600">ขวด: ${record.bottles} ใบ</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-green-600">+${record.points}</div>
+                                <div class="text-gray-600">คะแนน</div>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+        }
+
+        function loadUserData() {
+            const savedUser = localStorage.getItem('ecoPointUser');
+            if (savedUser) {
+                const userData = JSON.parse(savedUser);
+                users[userData.phone] = userData;
+                currentUser = userData;
+            }
+        }
+    </script>
+</body>
+
+</html>
